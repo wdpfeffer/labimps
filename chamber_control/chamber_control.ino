@@ -1,7 +1,5 @@
-
-
-#define lightLED PB3
-#define swLight PA2
+#define lightLED PB4
+#define swLight PA1
 #define temp 0
 #define hum 1
 #define sensorInterval 10000 //read every 10
@@ -11,6 +9,7 @@
 byte lightsButtonReading;
 byte lightsButtonState;
 byte lastLightsButtonState = HIGH;
+byte lightsState = LOW;
 
 unsigned long sensorCycleStart;
 unsigned long sensorCycleCurrent;
@@ -19,11 +18,10 @@ unsigned long lastDebounceTimeLights;
 
 void setup() {
   // put your setup code here, to run once:
-  pinMode(swLight, INPUT);
+  pinMode(swLight, INPUT_PULLDOWN);
   
-  pinMode(lightLED, OUTPUT);uu
+  pinMode(lightLED, OUTPUT);
   pinMode(PC13, OUTPUT);   //board status
-  
   sensorCycleStart = millis();
  
 }
@@ -31,23 +29,23 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
 
-  //Determine if we need a sensor read
-  if (millis()-sensorCycleStart > sensorInterval){
-    //Read temp and humidity
-
-    //update the display
-
-    //reset sensorCycleStart
-    sensorCycleStart = millis();
-    Serial.println("Sensor Read Triggered");
-    if (digitalRead(PC13)==HIGH){
-      digitalWrite(PC13, LOW);
-      //digitalWrite(lightLED, LOW);
-    }else{
-      digitalWrite(PC13, HIGH);
-      //digitalWrite(lightLED, HIGH);
-    }
-  }
+//  //Determine if we need a sensor read
+//  if (millis()-sensorCycleStart > sensorInterval){
+//    //Read temp and humidity
+//
+//    //update the display
+//
+//    //reset sensorCycleStart
+//    sensorCycleStart = millis();
+//    Serial.println("Sensor Read Triggered");
+//    if (digitalRead(PC13)==HIGH){
+//      digitalWrite(PC13, LOW);
+//      //digitalWrite(lightLED, LOW);
+//    }else{
+//      digitalWrite(PC13, HIGH);
+//      //digitalWrite(lightLED, HIGH);
+//    }
+//  }
 
   //Evaluate button pusheu
 
@@ -72,30 +70,16 @@ void loop() {
       lightsButtonState = lightsButtonReading;
 
       //toggle the LED
-      
+      if (lightsButtonState == HIGH){
+        lightsState = !lightsState;
+      }
     }
   }
 
-    // save the reading. Next time through the loop, it'll be the lastButtonState:
+  //Set the lights state
+  digitalWrite(lightLED, lightsState);
+  
+  // save the reading. Next time through the loop, it'll be the lastButtonState:
   lastLightsButtonState = lightsButtonReading;
-
-//  //Check for button pushes
-//  lightsButton = digitalRead(swLight);
-//
-//  if (lightsButton != lastLightsButton){
-//    //a push
-//    lightPush = millis();
-//  }
-//
-//  if (millis()-lightPush > pbInterval){
-//    //looks like areal push
-//    //toggle the state
-//    if (digitalRead(lightLED)==LOW){
-//      digitalWrite(lightLED,HIGH);
-//    }else{
-//      digitalWrite(lightLED, LOW);
-//    }
-//    Serial.println("Lights Button Pushed");
-//  }
 
 }
