@@ -1,3 +1,6 @@
+#include <Adafruit_SSD1306.h>
+#include <wiring.h>
+
 #define lightLED PB4
 #define swLight PA1
 #define temp 0
@@ -5,6 +8,13 @@
 #define sensorInterval 10000 //read every 10
 #define debounceDelay 50 //pushbutton interval
 
+#define SCREEN_WIDTH 128 // OLED display width, in pixels
+#define SCREEN_HEIGHT 32 // OLED display height, in pixels
+
+// Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
+#define OLED_RESET     4 // Reset pin # (or -1 if sharing Arduino reset pin)
+#define SCREEN_ADDRESS 0x3C ///< See datasheet for Address; 0x3D for 128x64, 0x3C for 128x32
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 byte lightsButtonReading;
 byte lightsButtonState;
@@ -23,6 +33,14 @@ void setup() {
   pinMode(lightLED, OUTPUT);
   pinMode(PC13, OUTPUT);   //board status
   sensorCycleStart = millis();
+
+  //Setup display
+  // Clear the buffer
+  display.clearDisplay();
+  display.setTextSize(2);
+  display.setTextColor(SSD1306_WHITE); // Draw white text
+  display.setCursor(0, 0);
+  display.write("Hello World");
  
 }
 
