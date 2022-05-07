@@ -1,7 +1,7 @@
-#include <Adafruit_SSD1306.h>
-#include <wiring.h>
+#include <Adafruit_SSD1306_STM32.h>
+#include <Wire.h>
 
-#define lightLED PB4
+#define lightLED PB3
 #define swLight PA1
 #define temp 0
 #define hum 1
@@ -13,8 +13,8 @@
 
 // Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
 #define OLED_RESET     4 // Reset pin # (or -1 if sharing Arduino reset pin)
-#define SCREEN_ADDRESS 0x3C ///< See datasheet for Address; 0x3D for 128x64, 0x3C for 128x32
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
 
 byte lightsButtonReading;
 byte lightsButtonState;
@@ -34,13 +34,16 @@ void setup() {
   pinMode(PC13, OUTPUT);   //board status
   sensorCycleStart = millis();
 
-  //Setup display
-  // Clear the buffer
-  display.clearDisplay();
-  display.setTextSize(2);
+  // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
+  if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3C for 128x32
+    Serial.println(F("SSD1306 allocation failed"));
+    for(;;); // Don't proceed, loop forever
+  }
+  
+  display.setTextSize(1);      // Normal 1:1 pixel scale
   display.setTextColor(SSD1306_WHITE); // Draw white text
-  display.setCursor(0, 0);
-  display.write("Hello World");
+  display.setCursor(0, 0);     // Start at top-left corner
+  display.write('Hello World');
  
 }
 
