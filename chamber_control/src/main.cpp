@@ -8,7 +8,7 @@
 
 #define buttonLights 2  //input of the light button
 #define buttonVent 3   //input of the vents button
-#define buttonFan 4     //input for the fan button
+#define buttonFan 5     //input for the fan button
 #define LEDlights A0
 #define LEDVent A1
 #define LEDFan A2
@@ -140,53 +140,54 @@ void loop() {
 
   //Evaluate button pushes
 
-  // //Lights
+  {//Lights
 
-  // readingButtonLights = digitalRead(buttonLights);
-  // // check to see if you just pressed the button
-  // // (i.e. the input went from LOW to HIGH), and you've waited long enough
-  // // since the last press to ignore any noise:
+  readingButtonLights = digitalRead(buttonLights);
+  // check to see if you just pressed the button
+  // (i.e. the input went from LOW to HIGH), and you've waited long enough
+  // since the last press to ignore any noise:
 
-  // // If the switch changed, due to noise or pressing:
-  // if (readingButtonLights != lastStateButtonLights) {
-  //   // reset the debouncing timer
-  //   lastDebounceTimeLights = millis();
-  // }
+  // If the switch changed, due to noise or pressing:
+  if (readingButtonLights != lastStateButtonLights) {
+    // reset the debouncing timer
+    lastDebounceTimeLights = millis();
+  }
 
-  // if ((millis() - lastDebounceTimeLights) > debounceDelay) {
-  //   // whatever the reading is at, it's been there for longer than the debounce
-  //   // delay, so take it as the actual current state:
+  if ((millis() - lastDebounceTimeLights) > debounceDelay) {
+    // whatever the reading is at, it's been there for longer than the debounce
+    // delay, so take it as the actual current state:
 
-  //   // if the button state has changed:
-  //   if (readingButtonLights != stateButtonLights) {
-  //     stateButtonLights = readingButtonLights;
+    // if the button state has changed:
+    if (readingButtonLights != stateButtonLights) {
+      stateButtonLights = readingButtonLights;
 
-  //     //toggle the LED
-  //     if (stateButtonLights == HIGH){
-  //       stateLights = !stateLights;
-  //     }
+      //toggle the LED
+      if (stateButtonLights == HIGH){
+        stateLights = !stateLights;
+      }
 
-  //     display.clearDisplay();
-  //     display.setCursor(0,0);
-  //     if (stateLights == HIGH){
-  //       display.write("Lights On");
-  //     }else{
-  //       display.write("Lights Off");
-  //     }
-  //     display.display();
-  //   }
-  // }
-
-  // //Set the lights state
-  // digitalWrite(LEDlights, stateLights);
-
-  // //save the reading. Next time through the loop, it'll be the lastButtonState:
-  // lastStateButtonLights = readingButtonLights;
+      display.clearDisplay();
+      display.setCursor(0,0);
+      if (stateLights == HIGH){
+        display.write("Lights On");
+      }else{
+        display.write("Lights Off");
+      }
+      display.display();
+    }
+  }
   
+  //Set the lights state
+  digitalWrite(LEDlights, stateLights);
+
+  //save the reading. Next time through the loop, it'll be the lastButtonState:
+  lastStateButtonLights = readingButtonLights;
+  }
   
-  // Fan Button
+  {//Fan
 
   readingButtonFan = digitalRead(buttonFan);
+  Serial.print(readingButtonFan);
   // check to see if you just pressed the button
   // (i.e. the input went from LOW to HIGH), and you've waited long enough
   // since the last press to ignore any noise:
@@ -223,51 +224,52 @@ void loop() {
 
   //Set the lights state
   digitalWrite(LEDFan, stateFan);
+
+  //save the reading. Next time through the loop, it'll be the lastButtonState:
+  lastStateButtonFan = readingButtonFan;
+  }
+
+  {// Vent Button
+  readingButtonVent = digitalRead(buttonVent);
+  // check to see if you just pressed the button
+  // (i.e. the input went from LOW to HIGH), and you've waited long enough
+  // since the last press to ignore any noise:
+
+  // If the switch changed, due to noise or pressing:
+  if (readingButtonVent != lastStateButtonVent) {
+    // reset the debouncing timer
+    lastDebounceTimeVent = millis();
+  }
+
+  if ((millis() - lastDebounceTimeVent) > debounceDelay) {
+    // whatever the reading is at, it's been there for longer than the debounce
+    // delay, so take it as the actual current state:
+
+    // if the button state has changed:
+    if (readingButtonVent != stateButtonVent) {
+      stateButtonVent = readingButtonVent;
+
+      //toggle the LED
+      if (stateButtonVent == HIGH){
+        stateVent = !stateVent;
+      }
+
+      display.clearDisplay();
+      display.setCursor(0,0);
+      if (stateVent == HIGH){
+        display.write("Vent On");
+      }else{
+        display.write("Vent Off");
+      }
+      display.display();
+    }
+  }
+
+  //Set the lights state
+  digitalWrite(LEDVent, stateVent);
     
   // save the reading. Next time through the loop, it'll be the lastButtonState:
-  lastStateButtonFan = readingButtonFan;
-
-
-  //  // Vent Button
-  // readingButtonVent = digitalRead(buttonVent);
-  // // check to see if you just pressed the button
-  // // (i.e. the input went from LOW to HIGH), and you've waited long enough
-  // // since the last press to ignore any noise:
-
-  // // If the switch changed, due to noise or pressing:
-  // if (readingButtonVent != lastStateButtonVent) {
-  //   // reset the debouncing timer
-  //   lastDebounceTimeVent = millis();
-  // }
-
-  // if ((millis() - lastDebounceTimeVent) > debounceDelay) {
-  //   // whatever the reading is at, it's been there for longer than the debounce
-  //   // delay, so take it as the actual current state:
-
-  //   // if the button state has changed:
-  //   if (readingButtonVent != stateButtonVent) {
-  //     stateButtonVent = readingButtonVent;
-
-  //     //toggle the LED
-  //     if (stateButtonVent == HIGH){
-  //       stateVent = !stateVent;
-  //     }
-
-  //     display.clearDisplay();
-  //     display.setCursor(0,0);
-  //     if (stateVent == HIGH){
-  //       display.write("Vent On");
-  //     }else{
-  //       display.write("Vent Off");
-  //     }
-  //     display.display();
-  //   }
-  // }
-
-  // //Set the lights state
-  // digitalWrite(LEDVent, stateVent);
-    
-  // // save the reading. Next time through the loop, it'll be the lastButtonState:
-  // lastStateButtonVent = readingButtonVent;
-
+  lastStateButtonVent = readingButtonVent;
+  }
+  //delay(2000);
 }
