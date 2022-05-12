@@ -25,6 +25,8 @@
 
 // Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
 #define OLED_RESET     4 // Reset pin # (or -1 if sharing Arduino reset pin)
+
+// Graphing Constants
 #define maxcount 15 //maximum number of displayed cycle and array lenthgs
 #define multiplier 8 //x axis multiplier
 #define tempMin 20.0  //lowest temperature for gauge

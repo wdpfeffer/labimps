@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "../.."
+		},
+		{
+			"name": "chamber_control",
+			"path": ".."
+		}
+	],
+	"settings": {}
+}
