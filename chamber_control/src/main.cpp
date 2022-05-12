@@ -14,7 +14,7 @@
 #define LEDFan A2
 #define temp 0
 #define hum 1
-#define sensorInterval 10000 //read every 10
+#define sensorInterval 60000 //read every 10
 #define debounceDelay 50 //pushbutton interval
 
 #define DHTPIN 6  //digital pin for temp and humidity readings
@@ -25,6 +25,12 @@
 
 // Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
 #define OLED_RESET     4 // Reset pin # (or -1 if sharing Arduino reset pin)
+#define maxcount 15 //maximum number of displayed cycle and array lenthgs
+#define multiplier 8 //x axis multiplier
+#define tempMin 20.0  //lowest temperature for gauge
+#define tempMax 80.0  //Max temperature for gauge
+#define humMin 0  //minimum humidity for gauge
+#define humMax 50.0 //Max humidity for gauge
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
@@ -44,6 +50,10 @@ byte readingButtonVent;
 byte stateButtonVent;
 byte lastStateButtonVent = HIGH;
 byte stateVent = LOW;
+
+int ncount = 0;  // number of cycles
+int tempA[maxcount];
+int humA[maxcount];
 
 unsigned long sensorCycleStart;
 unsigned long sensorCycleCurrent;
@@ -96,36 +106,72 @@ void loop() {
   // put your main code here, to run repeatedly:
 
  //Determine if we need a sensor read
-  if (millis()-sensorCycleStart > sensorInterval){
+  if (millis()-sensorCycleStart > sensorInterval || ncount == 0){
     //Read temp and humidity
     float t = dht.readTemperature();
     float h = dht.readHumidity();
     
-    //Display temp and humidity
+    //Draw Axes
     display.clearDisplay();
+    //draw x axis
+    display.drawLine(0, SCREEN_WIDTH-1, SCREEN_HEIGHT-1,
+    SCREEN_WIDTH-1, SSD1306_WHITE);
+
+    //draw y axis
+    display.drawLine(0, 0, 0, SCREEN_WIDTH-1, SSD1306_WHITE);
+    display.display();
+
+    if (ncount < maxcount){
+      //add directly to array
+      tempA[ncount] = t;
+      humA[ncount] = h;
+    }else{
+      for (int i = 0; i < maxcount-1; i++){
+        tempA[i] = tempA[i+1];
+        humA[i] = humA[i+1];
+      }
+      tempA[maxcount-1] = t;
+      humA[maxcount-1] = h;
+    }
+
+    for (int n=0; n < ncount; n++){
+      // scale the temps and humidity so it fits on plot
+      // Assume a rangeo of 20 to 80 C for Temperature
+      // and 0 to 50 for rel humidity
+
+      int yT = (SCREEN_HEIGHT-1)-(tempA[n]-tempMin)/(tempMax-tempMin)*(SCREEN_HEIGHT-1);
+      int yH = (SCREEN_HEIGHT-1)-(humA[n]-humMin)/(humMax-humMin)*(SCREEN_HEIGHT-1);
+
+      //plot it
+      display.fillCircle(n*multiplier, yH, 2, SSD1306_WHITE);
+      display.drawCircle(n*multiplier, yT, 2, SSD1306_WHITE);
+    }
+    display.display();
+
+    //print out temp and humidity as text
     display.setTextSize(1);
-    display.setCursor(0,0);
+    display.setCursor(10,0);
     
     char temperature[5];
-    dtostrf(t,5,1,temperature);
+    dtostrf(t,4,1,temperature);
     
-    display.write("Temp: ");
+    display.write("T: ");
     display.write(temperature);
     display.display();
 
     char humidity[5];
-    dtostrf(h,5,1,humidity);
+    dtostrf(h,4,1,humidity);
 
-    display.setCursor(0,10);
-    display.write("Humid: ");
+    display.setCursor(10,10);
+    display.write("H: ");
     display.write(humidity);
     display.display();
-    
-    
-    
 
-    //update the display
-
+    //update counter if needed
+    if (ncount < maxcount){
+      ncount++;
+    }
+    
     //reset sensorCycleStart
     sensorCycleStart = millis();
     Serial.println("Sensor Read Triggered");
