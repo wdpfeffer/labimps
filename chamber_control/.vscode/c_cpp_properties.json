@@ -1,0 +1,66 @@
+//
+// !!! WARNING !!! AUTO-GENERATED FILE!
+// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
+// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
+//
+{
+    "configurations": [
+        {
+            "name": "PlatformIO",
+            "includePath": [
+                "/home/bill/Documents/labimps/chamber_control/include",
+                "/home/bill/Documents/labimps/chamber_control/src",
+                "/home/bill/Documents/labimps/chamber_control/.pio/libdeps/nanoatmega328/DHT sensor library",
+                "/home/bill/Documents/labimps/chamber_control/.pio/libdeps/nanoatmega328/Adafruit Unified Sensor",
+                "/home/bill/Documents/labimps/chamber_control/.pio/libdeps/nanoatmega328/Adafruit SSD1306",
+                "/home/bill/Documents/labimps/chamber_control/.pio/libdeps/nanoatmega328/Adafruit GFX Library",
+                "/home/bill/Documents/labimps/chamber_control/.pio/libdeps/nanoatmega328/Adafruit BusIO",
+                "/home/bill/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                "/home/bill/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                "/home/bill/.platformio/packages/framework-arduino-avr/cores/arduino",
+                "/home/bill/.platformio/packages/framework-arduino-avr/variants/eightanaloginputs",
+                "/home/bill/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                "/home/bill/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                "/home/bill/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "/home/bill/Documents/labimps/chamber_control/include",
+                    "/home/bill/Documents/labimps/chamber_control/src",
+                    "/home/bill/Documents/labimps/chamber_control/.pio/libdeps/nanoatmega328/DHT sensor library",
+                    "/home/bill/Documents/labimps/chamber_control/.pio/libdeps/nanoatmega328/Adafruit Unified Sensor",
+                    "/home/bill/Documents/labimps/chamber_control/.pio/libdeps/nanoatmega328/Adafruit SSD1306",
+                    "/home/bill/Documents/labimps/chamber_control/.pio/libdeps/nanoatmega328/Adafruit GFX Library",
+                    "/home/bill/Documents/labimps/chamber_control/.pio/libdeps/nanoatmega328/Adafruit BusIO",
+                    "/home/bill/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                    "/home/bill/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                    "/home/bill/.platformio/packages/framework-arduino-avr/cores/arduino",
+                    "/home/bill/.platformio/packages/framework-arduino-avr/variants/eightanaloginputs",
+                    "/home/bill/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                    "/home/bill/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                    "/home/bill/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                    ""
+                ]
+            },
+            "defines": [
+                "PLATFORMIO=60000",
+                "ARDUINO_AVR_NANO",
+                "F_CPU=16000000L",
+                "ARDUINO_ARCH_AVR",
+                "ARDUINO=10808",
+                "__AVR_ATmega328P__",
+                ""
+            ],
+            "cStandard": "c11",
+            "cppStandard": "c++11",
+            "compilerPath": "/home/bill/.platformio/packages/toolchain-atmelavr/bin/avr-gcc",
+            "compilerArgs": [
+                "-mmcu=atmega328p",
+                ""
+            ]
+        }
+    ],
+    "version": 4
+}
