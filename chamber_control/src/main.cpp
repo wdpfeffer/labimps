@@ -21,7 +21,7 @@
 #define DHTTYPE DHT22  //The type of dht probe we are using
 
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
-#define SCREEN_HEIGHT 32 // OLED display height, in pixels
+#define SCREEN_HEIGHT 64 // OLED display height, in pixels
 
 // Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
 #define OLED_RESET     4 // Reset pin # (or -1 if sharing Arduino reset pin)
@@ -116,8 +116,9 @@ void loop() {
     //Draw Axes
     display.clearDisplay();
     //draw x axis
-    display.drawLine(0, SCREEN_WIDTH-1, SCREEN_HEIGHT-1,
-    SCREEN_WIDTH-1, SSD1306_WHITE);
+    display.drawLine(0, (SCREEN_HEIGHT-1), (SCREEN_WIDTH-1),
+    (SCREEN_HEIGHT-1), SSD1306_WHITE);
+    display.display();
 
     //draw y axis
     display.drawLine(0, 0, 0, SCREEN_WIDTH-1, SSD1306_WHITE);
@@ -164,7 +165,7 @@ void loop() {
     char humidity[5];
     dtostrf(h,4,1,humidity);
 
-    display.setCursor(10,10);
+    display.setCursor(10,9);
     display.write("H: ");
     display.write(humidity);
     display.display();
