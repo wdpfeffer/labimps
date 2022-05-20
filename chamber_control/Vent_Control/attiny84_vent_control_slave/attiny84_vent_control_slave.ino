@@ -3,6 +3,7 @@
 #include "TinyWireS.h"                          // I2C library for ATtiny84A (and other older ATtinys)
 
 const byte SLAVE_ADDR = 0xa;
+const byte availCmds[] = {0, 1, 2};
 
 volatile byte position = 0;
 
@@ -16,9 +17,19 @@ void loop() {
     TinyWireS_stop_check();
 }
 
-void requestISR(uint8_t mybyte) {
+void requestISR(uint8_t howMany) {
     
-    position = mybyte;
-    TinyWireS.write(position);
+    position = howMany;
+
+    switch (position) {
+      case 0{
+        
+      };
+      case 1{
+      
+      }
+    }
+
+    TinyWireS.write(1);
 
 }
